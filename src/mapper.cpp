@@ -16,15 +16,18 @@ vector<NODE> g[MAXN];
 bool discovered[MAXN];
 
 
-void init1() {							//clear previous graph entries
+void init1() {							
+	//clear previous graph entries
 	for (i=0; i<n; i++) g[i].clear();
 }
 
-void init2() {							//initialize for graph traversal	
+void init2() {							
+	//initialize for graph traversal	
 	memset(discovered,0,sizeof(discovered));
 }
 
-inline void join(int a, int b) {		//for undirected graph 
+inline void join(int a, int b) {		
+	//for undirected graph 
 	NODE n;
 	n.a = b-1;
 	n.state = false;
@@ -33,7 +36,8 @@ inline void join(int a, int b) {		//for undirected graph
 	g[b-1].push_back(n);			
 }
 
-void bftrav(int s) {					//s is the source	
+void bftrav(int s) {					
+	//s is the source	
 	bool con;
 	init2();		
 	queue<int> que;		
