@@ -1,0 +1,15 @@
+circle.node {
+    stroke: #fff;
+    stroke-width: 3px;
+}
+
+line.link {
+    stroke-width: 2px;
+    stroke: #999;
+    stroke-opacity: 0.6;
+}
+
+marker#arrow {
+    stroke: #999;
+    fill: #999;
+}
