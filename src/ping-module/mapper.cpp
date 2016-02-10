@@ -1,10 +1,17 @@
 /* This source code 
- * 		- takes input from txt files grphConnections.txt and IPaddresses.txt
+ * 		- takes input from txt files graphConnections.json
  * 		- creates graph adjacency list
  * 		- with 0 as source it breadth first traverses the graph
  * 		- using isAlive() function it detects the link's state
  * 		- state of all the links are written in linkState.json
  * 		- for json operations it uses json-cpp parser header and source file
+ * 
+ * Link states value:
+ * 		0 - link is down
+ * 		1 - link is up
+ * 		2 - undiscovered link
+ * 
+ * 		-Initially all link states values are 2 in graphConnections.json
  */ 
 #include <bits/stdc++.h>
 #include <unistd.h>								// for popen()
@@ -13,12 +20,15 @@
 using namespace std;
 #define MAXN 10000								//maximum number of nodes
 
-
 vector<string> IpAddr;
-vector<int> g[MAXN];
+struct grNode {									//graph node			
+	int val, handle;							//handle denotes the location of edge on 
+} tmp;											//JSON object				
+vector<grNode> g[MAXN];
 bool discovered[MAXN];
 int n, e, activeLinks, brokenLinks;
-json::Array outputArray;
+//json object
+json::Object jsonObj;
 
 
 void initialize();
@@ -27,11 +37,11 @@ int isAlive(string ipAddr);
 void mapNetwork();
 void init_bftrav();
 void display();
-void addLink(int, int, int);
+void addLink(int, int, int, int);
 void createJsonOp();
 
 
-/*-------driver program------*/
+//-------driver program------/
 
 int main() {
 	initialize();
@@ -48,39 +58,70 @@ int main() {
 void initialize() {
 	//populate IpAddr and graph adjacency list
 	takeInput();	
-	//display();
+	//display();			
 }
 
 void takeInput() {
-	//Take input from files to create graph and id to ipaddress mapping
-	ifstream ipfile("IPaddresses.txt"), grph("graphConnections.txt");
-	int id, i, a, b;
-	string addr;
+	//Take input from graphConnections.json to create graph and id to ipaddress mapping
+	ifstream ifs; 
+	ifs.open("graphConnections.json");
 	
-	while (ipfile >> id >> addr) {
-		IpAddr.push_back(addr);
+	if (!ifs.is_open()) {
+		cout << "Cannot open file graphConnecitons.json" << endl;
+		exit(EXIT_SUCCESS);
 	}	
-	ipfile.close();
 	
-	//scan no of vertices and edges
-	grph >> n >> e;
-	for (i=0; i<e; i++) {
-		grph >> a >> b;
-		//vertices are in 0 based indexing with 0 as ping server
-		g[a].push_back(b);
-		g[b].push_back(a);			
+	string ip, jsonInput;
+	while (getline(ifs, ip)) {
+		jsonInput = jsonInput + ip;
 	}	
-	grph.close();
+	ifs.close();
+	
+	//deserialize json input
+	json::Value input_val = json::Deserialize(jsonInput);
+	if (input_val.GetType() == json::NULLVal) {
+		cout << "Invalid json input" << endl;
+		exit(EXIT_SUCCESS);
+	}
+	
+	int n1, n2;
+	string ipstr;
+	jsonObj = input_val.ToObject();	
+	json::Array lnk = jsonObj["links"];
+	json::Array nds = jsonObj["nodes"];
+	n = nds.size(); 
+	e = lnk.size();
+	
+	//scan ip addresses of n nodes
+	for (int i=0; i<n; i++) {
+		ipstr = (string)nds[i]["ip"];
+		IpAddr.push_back(ipstr);
+	}
+	
+	//scan links 
+	for (int i=0; i<e; i++) {
+		n1 = lnk[i]["source"];
+		n2 = lnk[i]["target"];	
+		tmp.val = n2; tmp.handle = i;
+		g[n1].push_back(tmp);
+		tmp.val = n1; tmp.handle = i;
+		g[n2].push_back(tmp);
+	}	
+
 }
 
 void init_bftrav() {
+	//initialization function before breadth first traversal
 	memset(discovered, 0, sizeof discovered);
+	activeLinks = brokenLinks = 0;
 }		
 
 void mapNetwork() {
+	//Main driver program for mapping network
+	
 	//initialize before bf traversal
 	init_bftrav();
-	activeLinks = brokenLinks = 0;
+	
 	queue<int> que;
 	unsigned int m, u, v;
 	
@@ -93,24 +134,22 @@ void mapNetwork() {
 		que.pop();	
 		
 		for (v=0; v<g[u].size(); v++) {					
-			m = g[u][v];
+			m = g[u][v].val;
 			if (!discovered[m]) {						
 				
 				//check if host 'm' is alive
 				if (isAlive(IpAddr[m])) {
-					//sleep(1);
 					cout << "Active link : " << u << " <-> "<< m << endl;
-					addLink(u, m, 1);
+					addLink(u, m, 1, g[u][v].handle);
 					discovered[m] = true;
 					que.push(m);	
 					activeLinks++;
 				}
 				else {
 					cout << "** Broken link : " << u << " <-> "<< m << endl;	 
-					addLink(u, m, 1);
+					addLink(u, m, 1, g[u][v].handle);
 					brokenLinks++;
 				}	
-				
 			}	
 		}	
 	}
@@ -147,34 +186,39 @@ int isAlive(string ipAddr) {
 	
 void display() {
 	//display graph adjacency list
+	for (unsigned int i=0; i<IpAddr.size(); i++) {
+		cout << "i : " << i << " ip : " << IpAddr[i] << endl;
+	}	
+	
 	printf("\n----adjacency list------\n");
 	for (int i=0;i<n;i++) {
-		printf("%d -> ",i+1);
+		printf("%d -> ",i);
 		for (int j=0; j<(int)g[i].size(); j++) {
-			printf("%d,  ",g[i][j]+1);
+			printf("%d,  ",g[i][j].val);
 		}
 		printf("\n");
 	}
 	printf("-------------------------\n");
 }
 	
-void addLink(int n1, int n2, int state) {
-	//add link from n1 to n2 and state to arr(json)
-	json::Object obj;
-	obj["source"] = n1;
-	obj["target"] = n2;
-	obj["state"] = state;
-	outputArray.push_back(obj);
+void addLink(int n1, int n2, int state, int handle) {
+	//searc n1 n2 link and change state of it
+	jsonObj["links"][handle]["value"] = state;
 }	
 
 void createJsonOp() {
-	//output state of links on linkState.json
-	json::Object outp;
-	outp["links"] = outputArray;
-	string str = json::Serialize(outp);	
-	ofstream ops("linkState.json");
-	ops << str;
-	ops.close();
+	//write output state of links on linkState.json
+	ofstream ofs;
+	ofs.open("linkState.json");
+	
+	if (!ofs.is_open()) {
+		cout << "Cannot open file linkState.json" << endl;
+		exit(EXIT_SUCCESS);
+	}	
+	
+	string ser = json::Serialize(jsonObj);
+	ofs << ser;
+	ofs.close();
 }	
 	
 	
