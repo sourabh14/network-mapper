@@ -12,7 +12,7 @@
  * 		2 - undiscovered link
  * 
  * 		-Initially all link states values are 2 in graphConnections.json
- */ 
+ */
 #include <bits/stdc++.h>
 #include <unistd.h>								// for popen()
 #include "json-cpp/json.h"						// for json parsing							
@@ -64,7 +64,7 @@ void initialize() {
 void takeInput() {
 	//Take input from graphConnections.json to create graph and id to ipaddress mapping
 	ifstream ifs; 
-	ifs.open("./ping-module/graphConnections.json");
+	ifs.open("graphConnections.json");
 	
 	if (!ifs.is_open()) {
 		cout << "Cannot open file graphConnecitons.json" << endl;
@@ -185,7 +185,7 @@ int isAlive(string ipAddr) {
 }
 	
 void display() {
-	//display graph adjacency list
+	// Display graph adjacency list
 	for (unsigned int i=0; i<IpAddr.size(); i++) {
 		cout << "i : " << i << " ip : " << IpAddr[i] << endl;
 	}	
@@ -202,14 +202,14 @@ void display() {
 }
 	
 void addLink(int n1, int n2, int state, int handle) {
-	//searc n1 n2 link and change state of it
+	// search n1 n2 link and change state of it
 	jsonObj["links"][handle]["value"] = state;
 }	
 
 void createJsonOp() {
-	//write output state of links on linkState.json
+	// write output state of links on linkState.json
 	ofstream ofs;
-	ofs.open("./ping-module/linkState.json");
+	ofs.open("linkState.json");
 	
 	if (!ofs.is_open()) {
 		cout << "Cannot open file linkState.json" << endl;
@@ -220,15 +220,4 @@ void createJsonOp() {
 	ofs << ser;
 	ofs.close();
 }	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	

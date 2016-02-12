@@ -10,7 +10,7 @@ var force = d3.layout.force()
 
 var svg = d3.select("#cloud");
 
-d3.json("net.json", function(json) {
+d3.json("./ping-module/linkState.json", function(json) {
     force
         .nodes(json.nodes)
         .links(json.links)
@@ -19,8 +19,7 @@ d3.json("net.json", function(json) {
     var links = svg.append("g").selectAll("line.link")
         .data(force.links())
         .enter().append("line")
-        .attr("class", "link")
-        .attr("marker-end", "url(#arrow)");
+        .attr("class", "link");
 
     var nodes = svg.selectAll("circle.node")
         .data(force.nodes())
