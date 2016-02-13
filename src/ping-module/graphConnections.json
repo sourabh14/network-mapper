@@ -1,1 +1,1 @@
-{"nodes":[{"id":0,"ip":"10.42.0.1"},{"id":1,"ip":"10.42.0.28"},{"id":2,"ip":"10.42.0.65"},{"id":2,"ip":"10.42.0.55"}],"links":[{"source":0,"target":1,"value":2},{"source":0,"target":2,"value":2},{"source":0,"target":2,"value":2}]}
+{"nodes":[{"id":0,"ip":"10.42.0.1"},{"id":1,"ip":"10.42.0.65"},{"id":2,"ip":"10.42.0.28"}],"links":[{"source":0,"target":1,"value":2},{"source":0,"target":2,"value":2}]}
