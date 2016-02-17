@@ -2,12 +2,8 @@
 <html>
 	<body>
 		<?php 
-			//store inputs from addNode.html
-			$ipAdr = $_POST["ipAddress"];
-			$devName = $_POST["name"];
+			//store inputs from deleteNode.html
 			$ndId = (int)$_POST["nodeId"];
-			$prId = (int)$_POST["parentId"];
-			
 			
 			//read from graphConnections.json
 			$filename = "./ping-module/graphConnections.json";
@@ -25,16 +21,29 @@
 
 			//decode json input
 			$jsonObj = json_decode($jsonInput, TRUE);
-			$ndElem['id'] = $ndId;
-			$ndElem['ip'] = $ipAdr;
-			$ndElem['name'] = $devName;
-			$linkElem['source'] = $prId;
-			$linkElem['target'] = $ndId;
-			$linkElem['value'] = 2;
 			
-			//push element
-			array_push( $jsonObj['nodes'], $ndElem);
-			array_push( $jsonObj['links'], $linkElem);
+			//delete ndId from nodes
+			$i = 0;
+			foreach ( $jsonObj['nodes'] as $value ) {
+				if ($value['id'] == $ndId) {
+					unset($jsonObj['nodes'][$i]);
+				}	
+				$i++;
+			}	 
+			$jsonObj['nodes'] = array_values($jsonObj['nodes']);
+			
+			//delete ndId from links
+			$i = 0;
+			foreach ( $jsonObj['links'] as $value ) {
+				if (($value['source'] == $ndId) || ($value['target'] == $ndId)) {
+					unset($jsonObj['links'][$i]);
+				}	
+				$i++;
+			}
+			$jsonObj['links'] = array_values($jsonObj['links']);
+			
+			//print_r($jsonObj['nodes']);
+			//print_r($jsonObj['links']);
 			
 			//encode json object
 			$jsonStr = json_encode($jsonObj);
@@ -52,7 +61,7 @@
 			fwrite($file, $jsonStr);
 			fclose($file);
 
-			echo "Node is added";
+			echo "Node is deleted";
 		?>	
 	</body>
 </html>

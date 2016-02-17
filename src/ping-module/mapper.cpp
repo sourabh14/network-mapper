@@ -18,9 +18,9 @@
 #include "json-cpp/json.h"						// for json parsing							
 		
 using namespace std;
-#define MAXN 10000								//maximum number of nodes
+#define MAXN 1000								//maximum number of nodes
 
-vector<string> IpAddr;
+vector<string> IpAddr(MAXN);
 struct grNode {									//graph node			
 	int val, handle;							//handle denotes the location of edge on 
 } tmp;											//JSON object				
@@ -95,7 +95,8 @@ void takeInput() {
 	//scan ip addresses of n nodes
 	for (int i=0; i<n; i++) {
 		ipstr = (string)nds[i]["ip"];
-		IpAddr.push_back(ipstr);
+		n1 = nds[i]["id"];
+		IpAddr[n1] = ipstr;
 	}
 	
 	//scan links 

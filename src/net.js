@@ -1,10 +1,10 @@
-var width = 1200;
-var height = 800;
+var width = 1300;
+var height = 700;
 
 var color = d3.scale.category10();
 
 var force = d3.layout.force()
-    .charge(-80)
+    .charge(-100)
     .linkDistance(120)
     .size([width, height]);
 
@@ -42,9 +42,8 @@ d3.json("./ping-module/linkState.json", function(json) {
         .style("fill", function(d) { return "skyblue"; })
         .call(force.drag);
 
-	    nodes.append("text")
-			   	 .attr("dy", ".35em")
-		.text(function(e) { return e.id; });
+	    nodes.append("title")
+			   	 .text(function(d) { return d.name + ": " + d.ip; });
 
     force.on("tick", function() {
 
