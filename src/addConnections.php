@@ -40,8 +40,8 @@
 			$jsonStr = json_encode($jsonObj);
 			
 			
-			echo "<br>", "graphConnections.json", "<br>", $jsonStr;
-			echo "<br>", "<br>";
+			//echo "<br>", "graphConnections.json", "<br>", $jsonStr;
+			//echo "<br>", "<br>";
 			
 			//write to file
 			$file = fopen($filename, "w");

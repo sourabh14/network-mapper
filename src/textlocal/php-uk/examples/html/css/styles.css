@@ -1,0 +1,37 @@
+html, body, input, textarea, td, th {
+    font-family: Calibri;
+    font-size: 12px;
+}
+
+th {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#main {
+    width: 500px;
+}
+
+label {
+    width: 125px;
+    float: left;
+}
+
+.fieldRow {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+input[type="text"] {
+    width: 200px;
+}
+
+input[type="submit"] {
+    width: auto;
+    padding: 6px;
+    font-size: 13px;
+}
+
+textarea.wide {
+    width: 300px;
+}

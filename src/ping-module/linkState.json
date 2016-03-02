@@ -1,1 +1,1 @@
-{"links":[{"source":0,"target":1,"value":1},{"source":0,"target":2,"value":0}],"nodes":[{"id":0,"ip":"10.42.0.1","name":"ping server"},{"id":1,"ip":"10.42.0.65","name":"mobile1"},{"id":2,"ip":"10.42.0.28","name":"mobile2"}]}
+{"links":[{"source":0,"target":1,"value":1},{"source":1,"target":2,"value":0}],"nodes":[{"id":0,"ip":"192.168.43.39","name":"ping server"},{"id":1,"ip":"192.168.43.1","name":"Mobile Hotspot"},{"id":2,"ip":"192.168.43.33","name":"HPDV6"}]}

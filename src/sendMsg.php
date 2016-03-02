@@ -4,13 +4,13 @@
 		<?php
 			include_once("ViaNettSMS.php");
 			
-			$Username = "shivamjoshi0108@gmail.com";
-			$Password = "jfqnx";
-			$MsgSender = "+919109516159";
+			$Username = "shubhamkumawat@yahoo.com";
+			$Password = "23msp";
+			$MsgSender = "+919981257279";
 			$DestinationAddress = "+919893592401";
-			$Message = "Down IPs are :";
+			$Message = "wE are testing";
 			
-			
+			/*
 			//read from graphConnections.json
 			$filename = "./ping-module/linkState.json";
 			
@@ -37,6 +37,7 @@
 					$Message = $Message . $m . "<br>" ;
 				}		
 			}	
+			*/ 
 			
 			//send sms
 			$ViaNettSMS = new ViaNettSMS($Username, $Password);
