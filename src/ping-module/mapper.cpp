@@ -23,12 +23,12 @@ using namespace std;
 vector<string> IpAddr(MAXN);
 struct grNode {									//graph node			
 	int val, handle;							//handle denotes the location of edge on 
-} tmp;											//JSON object				
+} tmp;															
 vector<grNode> g[MAXN];
 bool discovered[MAXN];
 int n, e, activeLinks, brokenLinks;
 //json object
-json::Object jsonObj;
+json::Object jsonObj;							//JSON object	
 
 
 void initialize();
@@ -140,8 +140,8 @@ void mapNetwork() {
 				
 				//check if host 'm' is alive
 				if (isAlive(IpAddr[m])) {
-					cout << "Active link : " << u << " <-> "<< m << endl;
-					addLink(u, m, 1, g[u][v].handle);
+					cout << "Active link : " << u[ << " <-> "<< m << endl;
+					addLink(u, m, 1, gu][v].handle);
 					discovered[m] = true;
 					que.push(m);	
 					activeLinks++;

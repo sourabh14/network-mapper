@@ -4,9 +4,9 @@
         <meta http-equiv="content-type" content="text/html;charset=utf-8">
         <title>Network Mapper</title>
         <script type="text/javascript" src="d3.v2.js"></script>
-        <!-- Autorefresh 5 min.
+        
         <meta http-equiv="refresh" content="300">
-        -->
+        
     </head>
 	<body>
 		Execute mapper
